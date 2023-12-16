@@ -93,26 +93,9 @@ namespace ASPNET.Common.ClaimUtilities
 
             }
 
-            /*
-                                    {;
-                                        new Claim(ClaimTypes.NameIdentifier,result.id.ToString()),;
-                                        new Claim(ClaimTypes.Role, result.userRole.ToString()),;
-                                        new Claim(ClaimTypes.Name, result.username),;
-
-                                    };
-            */
-
-
             ClaimsIdentity identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             ClaimsPrincipal principal = new ClaimsPrincipal(identity);
-            /*AuthenticationProperties properties = new AuthenticationProperties()
-            {
-                IsPersistent = true,
-                ExpiresUtc = DateTime.Now.AddMinutes(10),
-                
-            };
-*/
-
+         
             await sign.HttpContext.SignInAsync(principal, sign.AuthenticationProperties);
 
 

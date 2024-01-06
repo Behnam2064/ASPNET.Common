@@ -18,32 +18,32 @@ namespace ASPNET.Common.PaginationUtilities
             StringBuilder pagingTags = new StringBuilder();
 
             #region Root html tag
-/*
-            if (!string.IsNullOrEmpty(pageInfo.TagRootItems))
-            {
-                pagingTags.Append($"<{pageInfo.TagRootItems}");
-                if (!string.IsNullOrEmpty(pageInfo.ClassRootItems))
-                {
-                    pagingTags.Append($" class=\"{pageInfo.ClassRootItems}\"");
-                }
-            }
-*/
+            /*
+                        if (!string.IsNullOrEmpty(pageInfo.TagRootItems))
+                        {
+                            pagingTags.Append($"<{pageInfo.TagRootItems}");
+                            if (!string.IsNullOrEmpty(pageInfo.ClassRootItems))
+                            {
+                                pagingTags.Append($" class=\"{pageInfo.ClassRootItems}\"");
+                            }
+                        }
+            */
             #endregion
 
             //Prev Page
             if (pageInfo.CurrentPage > 1)
             {
                 pagingTags.Append(GetTagString
-                                 ("Prev", PageUrl(pageInfo.CurrentPage - 1), false,pageInfo));
+                                 ("Prev", PageUrl(pageInfo.CurrentPage - 1), false, pageInfo));
             }
 
-            if (pageInfo.MaxNumberShow < 1)
+            if (pageInfo.MaxNumber < 1)
             {
                 //Default way
                 //Page Numbers
                 for (int i = 1; i <= pageInfo.LastPage; i++)
                 {
-                    pagingTags.Append(GetTagString(i.ToString(), PageUrl(i), i == pageInfo.CurrentPage,pageInfo));
+                    pagingTags.Append(GetTagString(i.ToString(), PageUrl(i), i == pageInfo.CurrentPage, pageInfo));
                 }
 
             }
@@ -52,7 +52,7 @@ namespace ASPNET.Common.PaginationUtilities
                 //New way
                 //Default way
 
-                int centerPage = pageInfo.MaxNumberShow / 2;
+                int centerPage = pageInfo.MaxNumber / 2;
                 /*if (pageInfo.MaxNumberShow / 2 > 1)
                     centerPage++;*/
                 int ForwardPage = pageInfo.CurrentPage + centerPage;
@@ -62,7 +62,7 @@ namespace ASPNET.Common.PaginationUtilities
                 if (BackwardPage < 1)
                 {
                     BackwardPage = 1;
-                    ForwardPage = pageInfo.MaxNumberShow;
+                    ForwardPage = pageInfo.MaxNumber;
 
                 }
                 else
@@ -90,7 +90,10 @@ namespace ASPNET.Common.PaginationUtilities
                 int EndBackwardPage = BackwardPage + centerPage;
 
                 if (EndBackwardPage > pageInfo.LastPage)
-                    EndBackwardPage = pageInfo.LastPage + 1;
+                    if (pageInfo.LastPage == 1)
+                        EndBackwardPage = pageInfo.LastPage;
+                    else
+                        EndBackwardPage = pageInfo.LastPage + 1;
 
 
 
@@ -136,17 +139,18 @@ namespace ASPNET.Common.PaginationUtilities
             //Next Page
             if (pageInfo.CurrentPage < pageInfo.LastPage)
             {
-                pagingTags.Append(GetTagString
-                                 ("Next", PageUrl(pageInfo.CurrentPage + 1), false, pageInfo));
+                if (pageInfo.LastPage > 1)
+                    pagingTags.Append(GetTagString
+                                     ("Next", PageUrl(pageInfo.CurrentPage + 1), false, pageInfo));
             }
 
 
             #region Root html tag
 
-           /* if (!string.IsNullOrEmpty(pageInfo.TagRootItems))
-            {
-                pagingTags.Append($"</{pageInfo.TagRootItems}>");
-            }*/
+            /* if (!string.IsNullOrEmpty(pageInfo.TagRootItems))
+             {
+                 pagingTags.Append($"</{pageInfo.TagRootItems}>");
+             }*/
 
             #endregion
 
@@ -161,8 +165,8 @@ namespace ASPNET.Common.PaginationUtilities
             TagBuilder tag = new TagBuilder(IsCurrentPage ? pageInfo.TagItemCurrentPage : pageInfo.TagItems); // Construct an <a> tag
             if (!IsCurrentPage)
             {
-                if(!string.IsNullOrEmpty(pageInfo.ClassItems))
-                tag.MergeAttribute("class", pageInfo.ClassItems);
+                if (!string.IsNullOrEmpty(pageInfo.ClassItems))
+                    tag.MergeAttribute("class", pageInfo.ClassItems);
                 tag.MergeAttribute("href", hrefValue);
             }
             else

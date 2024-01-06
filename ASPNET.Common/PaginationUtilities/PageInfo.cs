@@ -11,7 +11,7 @@ namespace ASPNET.Common.PaginationUtilities
         public int TotalItems { get; set; }
         public int ItemsPerPage { get; set; }
         public int CurrentPage { get; set; }
-        public int MaxNumberShow { get; set; }
+        public int MaxNumber { get; set; }
 
         /// <summary>
         /// Like page-item , page-link , and ...

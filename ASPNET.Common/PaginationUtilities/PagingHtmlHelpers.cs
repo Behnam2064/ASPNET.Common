@@ -171,6 +171,7 @@ namespace ASPNET.Common.PaginationUtilities
             }
             else
             {
+                tag.MergeAttribute("disabled", null);
                 if (!string.IsNullOrEmpty(pageInfo.ClassItemCurrentPage))
                     tag.MergeAttribute("class", pageInfo.ClassItemCurrentPage);
 

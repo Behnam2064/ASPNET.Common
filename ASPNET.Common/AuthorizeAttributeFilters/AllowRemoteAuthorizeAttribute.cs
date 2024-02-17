@@ -56,8 +56,5 @@ namespace ASPNET.Common.AuthorizeAttributeFilters
                 //context.HttpContext.Response.Redirect(string.Empty);
             }
         }
-
-
-
     }
 }

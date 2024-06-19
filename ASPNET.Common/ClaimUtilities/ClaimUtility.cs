@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
+using System.Reflection.Metadata;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -70,6 +72,16 @@ namespace ASPNET.Common.ClaimUtilities
             await context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         }
 
+        /// <summary>
+        /// It supports multiple roles.
+        /// Send the property with the name Roles and type string.
+        /// like
+        /// Roles = Admin,Manager,....
+        /// Separator => ,
+        /// </summary>
+        /// </summary>
+        /// <param name="sign"></param>
+        /// <returns></returns>
         public static async Task SignInAsync(SignInArguments sign)
         {
             List<System.Reflection.PropertyInfo> PropertiesSignInModel = sign.SingInModel.GetType().GetProperties().ToList();
@@ -90,9 +102,22 @@ namespace ASPNET.Common.ClaimUtilities
                 string? PropModeValue = item.GetValue(sign.SingInModel)?.ToString();
 
                 claims.Add(new Claim(constValue, PropModeValue));
-
             }
 
+            if (PropertiesSignInModel.Any(x=> x.Name == "Roles"))
+            {
+                System.Reflection.PropertyInfo? rolesProperty = PropertiesSignInModel.FirstOrDefault(x => x.Name == "Roles");
+                string rolesStringValue = rolesProperty.GetValue(sign.SingInModel)?.ToString(); // Like Admin,Manager,...
+
+                string[] rolesArray = rolesStringValue.Split(","); // Array of roles 
+
+                var roleClaimValue = Constants.FirstOrDefault(x => x.Name.Equals("Role"));
+                string? constValue = roleClaimValue.GetValue(null)?.ToString();
+                foreach (string role in rolesArray)
+                    claims.Add(new Claim(constValue, role));
+            }
+
+            //ClaimsIdentity identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme,ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
             ClaimsIdentity identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             ClaimsPrincipal principal = new ClaimsPrincipal(identity);
          
@@ -104,6 +129,13 @@ namespace ASPNET.Common.ClaimUtilities
 
     public class SignInArguments
     {
+        /// <summary>
+        /// It supports multiple roles.
+        /// Send the property with the name Roles and type string.
+        /// like
+        /// Roles = Admin,Manager,....
+        /// Separator => ,
+        /// </summary>
         public required object SingInModel { get; set; }
         public required HttpContext HttpContext { get; set; }
         public required AuthenticationProperties AuthenticationProperties { get; set; }

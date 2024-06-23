@@ -24,7 +24,7 @@ namespace ASPNET.Common.AuthorizeAttributeFilters
             {
                 IList? list = value as IList;
 
-                return list != null && list.Count > _minElements;
+                return list != null && list.Count >= _minElements;
             }
         }
     }

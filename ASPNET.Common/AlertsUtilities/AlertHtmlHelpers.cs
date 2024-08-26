@@ -91,10 +91,7 @@ namespace ASPNET.Common.AlertsUtilities
                     if (appData.Any(x => x.Key.StartsWith(Prefix + item, stringComparison)))
                     {
                         foreach (var item2 in appData.Where(x => x.Key.StartsWith(Prefix + item, stringComparison)).ToList())
-                        {
                             htmlTags.Add(alertMakerMethod1.Invoke(htmlHelper, item2.Value as string, item));
-
-                        }
                     }
                 }
                 catch { }

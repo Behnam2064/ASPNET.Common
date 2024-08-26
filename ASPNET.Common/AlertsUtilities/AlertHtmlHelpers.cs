@@ -70,13 +70,16 @@ namespace ASPNET.Common.AlertsUtilities
         /// <param name="stringComparison"></param>
         /// <param name="IsDismissible"></param>
         /// <returns></returns>
-        public static IEnumerable<IHtmlContent> AlertBootstrapAuto<TModel>(this IHtmlHelper htmlHelper, ViewDataDictionary<TModel> appData, string Prefix = nameof(AlertBootstrapAuto), StringComparison stringComparison = StringComparison.Ordinal, bool IsDismissible = true)
+        public static IEnumerable<IHtmlContent> AlertBootstrapAuto(this IHtmlHelper htmlHelper, object appDataObject, string Prefix = nameof(AlertBootstrapAuto), StringComparison stringComparison = StringComparison.Ordinal, bool IsDismissible = true)
         {
+
+            //ViewDataDictionary
+            IDictionary<string, object?>? appData = (IDictionary<string, object?>)appDataObject;// or ViewDataDictionary
             IList<IHtmlContent> htmlTags = new List<IHtmlContent>();
             if (appData == null)
                 return htmlTags;
-
-
+            
+            
             Func<IHtmlHelper, object, AlertBootstrapType, IHtmlContent> alertMakerMethod1 = AlertDismissibleBootstrap;
             if (!IsDismissible)
                 alertMakerMethod1 = AlertBootstrap;
@@ -100,5 +103,11 @@ namespace ASPNET.Common.AlertsUtilities
 
             return htmlTags;
         }
+
+
+      /*  public static IEnumerable<IHtmlContent> AlertBootstrapAuto<TModel>(this IHtmlHelper htmlHelper, ViewDataDictionary appData, string Prefix = nameof(AlertBootstrapAuto), StringComparison stringComparison = StringComparison.Ordinal, bool IsDismissible = true)
+        {
+            return AlertBootstrapAuto(htmlHelper, appData, Prefix, stringComparison, IsDismissible);
+        }*/
     }
 }

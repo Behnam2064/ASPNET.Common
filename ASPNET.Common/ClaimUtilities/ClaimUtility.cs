@@ -48,7 +48,7 @@ namespace ASPNET.Common.ClaimUtilities
 
         }
 
-        public static List<string> GetRolse(ClaimsPrincipal User)
+        public static List<string> GetRoles(ClaimsPrincipal User)
         {
             try
             {
@@ -62,7 +62,7 @@ namespace ASPNET.Common.ClaimUtilities
             }
             catch (Exception)
             {
-                return null;
+                return new List<string>();
             }
 
         }

@@ -20,14 +20,28 @@ namespace ASPNET.Common.ClaimUtilities
         {
             try
             {
-                var claimsIdentity = User.Identity as ClaimsIdentity;
-                long userId = long.Parse(claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value);
+                
+                long userId = long.Parse(GetNameIdentifier(User));
                 return userId;
             }
             catch (Exception)
             {
 
                 return null;
+            }
+        }
+        public static string? GetNameIdentifier(ClaimsPrincipal User)
+        {
+            try
+            {
+                var claimsIdentity = User.Identity as ClaimsIdentity;
+
+                return claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+            }
+            catch (Exception)
+            {
+
+                return string.Empty;
             }
 
         }

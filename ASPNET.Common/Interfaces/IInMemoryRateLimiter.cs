@@ -8,10 +8,11 @@ namespace ASPNET.Common.Interfaces
 {
     public enum MemoryRateRequestType
     {
+        Auth, //This amount is considered as a general amount.
         AuthWebSocket,
-        Download,
+        Download, //This amount is considered as a general amount.
+        Activation, //This amount is considered as a general amount.
         ActivationWebSocket,
-        // موارد دلخواه دیگر...
     }
 
     public enum RateLimitTimeUnit
@@ -29,5 +30,6 @@ namespace ASPNET.Common.Interfaces
     }
     public interface IInMemoryRateLimiter
     {
+        public bool IsRequestAllowed(MemoryRateRequestType type, string clientId);
     }
 }

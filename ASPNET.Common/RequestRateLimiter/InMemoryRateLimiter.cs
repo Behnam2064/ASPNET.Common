@@ -106,6 +106,12 @@ namespace ASPNET.Common.RequestRateLimiter
             }
         }
 
+        public void Reset()
+        {
+            _requestLogs.Clear();
+            _blockedUntil.Clear();
+        }
+
         public void Dispose()
         {
             _cleanupTimer?.Dispose();

@@ -33,5 +33,6 @@ namespace ASPNET.Common.Interfaces
     public interface IInMemoryRateLimiter
     {
         public bool IsRequestAllowed(MemoryRateRequestType type, string clientId);
+        public void Reset();
     }
 }

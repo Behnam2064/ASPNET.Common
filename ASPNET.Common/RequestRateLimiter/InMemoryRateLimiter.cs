@@ -106,10 +106,22 @@ namespace ASPNET.Common.RequestRateLimiter
             }
         }
 
-        public void Reset()
+        public CLearMemoryRateLimiterResult? Reset()
         {
+            CLearMemoryRateLimiterResult? result = null;
+            try
+            {
+                result = new CLearMemoryRateLimiterResult()
+                {
+                    RequestLogs = _requestLogs.ToDictionary(),
+                    BlockedUntil = _blockedUntil.ToDictionary(),
+                };
+            } catch { }
+
             _requestLogs.Clear();
             _blockedUntil.Clear();
+
+            return result;
         }
 
         public void Dispose()

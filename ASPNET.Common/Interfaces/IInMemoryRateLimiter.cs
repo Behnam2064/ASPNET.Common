@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -33,6 +34,17 @@ namespace ASPNET.Common.Interfaces
     public interface IInMemoryRateLimiter
     {
         public bool IsRequestAllowed(MemoryRateRequestType type, string clientId);
-        public void Reset();
+        public CLearMemoryRateLimiterResult? Reset();
+    }
+
+    public class CLearMemoryRateLimiterResult
+    {
+        public Dictionary<string, List<DateTime>> RequestLogs {  get; set; }
+        public Dictionary<string, DateTime> BlockedUntil {  get; set; }
+        public CLearMemoryRateLimiterResult()
+        {
+            RequestLogs = new Dictionary<string, List<DateTime>>();
+            BlockedUntil = new Dictionary<string, DateTime>();
+        }
     }
 }
